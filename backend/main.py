@@ -7,7 +7,7 @@ app = FastAPI()
 
 assumed = assumptions.DCFAssumptions(5, [0.1,0.2,0.1,0.3,0.2], 0.02, 0.07, 0.03,0.03)
 
-@app.get("/{stock}")
+@app.get("/api/{stock}")
 async def getStockValue(stock:str): 
     try:
         fin = financials.Financials(stock)
@@ -26,11 +26,11 @@ async def getStockValue(stock:str):
                             assumed.equity_risk_premium, prev_year_data["Tax Rate For Calcs"], 
                             fin.share_price, fin.shares_outstanding, assumed.cost_of_debt)
 
-    response = forecast.getInstrinsicValues(wacc, fcff, prev_year_data["Total Debt"], fin.shares_outstanding, assumed.terminal_growth_rate)
-    print(list(response.values()))
-    if 'nan' in list(response.values()):
+    value = forecast.getInstrinsicValues(wacc, fcff, prev_year_data["Total Debt"], fin.shares_outstanding, assumed.terminal_growth_rate)["Value per stock"]
+   
+    if value == 'nan':
         raise HTTPException(status_code = 404, detail = f"Data Missing from scraper")
-    return {"valuations":response, "stock_snapshot": fin.stock_price_snapshot}
+    return {"value":value, "stock_snapshot": fin.stock_price_snapshot}
 
 class AssumptionData(BaseModel):
 
@@ -41,7 +41,7 @@ class AssumptionData(BaseModel):
     terminal_growth_rate:float
     cost_of_debt:float
 
-@app.post("/modify_assumption")
+@app.post("/api/modify_assumption")
 async def changeAssumptions(assumptions: AssumptionData):
     input = (assumptions.forecast_years, assumptions.revenue_growth, assumptions.risk_free_rate, 
              assumptions.equity_risk_premium, assumptions.terminal_growth_rate, assumptions.cost_of_debt)
