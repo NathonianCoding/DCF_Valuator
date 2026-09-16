@@ -13,11 +13,11 @@ class Financials:
             raise f"{stock} couldn't be found"
 
         self.financials_df = ticker.financials
-        print(self.financials_df)
+        
 
         stock_price_variations = ticker.history(period="1d", interval = "1h")
         timestamps = stock_price_variations.index.to_list()
-        self.closings = {timestamps[i].ctime():lst[3] for i,lst in enumerate(stock_price_variations.to_numpy())}
+        self.stock_price_snapshot = {timestamps[i].ctime():f"{lst[3]:.2f}" for i,lst in enumerate(stock_price_variations.to_numpy())}
         
 
         self.cashflow_df = ticker.cashflow

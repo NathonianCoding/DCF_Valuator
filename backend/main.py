@@ -30,7 +30,7 @@ async def getStockValue(stock:str):
     print(list(response.values()))
     if 'nan' in list(response.values()):
         raise HTTPException(status_code = 404, detail = f"Data Missing from scraper")
-    return response
+    return {"valuations":response, "stock_snapshot": fin.stock_price_snapshot}
 
 class AssumptionData(BaseModel):
 
