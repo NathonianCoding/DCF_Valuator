@@ -4,52 +4,81 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DCF Valuator</title>
-  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-100 min-h-screen">
-  <header class="max-w-3xl mx-auto pt-24 px-6">
-    <h1 class="font-serif text-6xl font-bold text-slate-800 tracking-tight leading-tight">
-      DCF Valuator
-    </h1>
+  <div class="mx-auto w-full max-w-5xl px-6 py-12 sm:px-8 lg:py-24">
+    <header class="max-w-3xl mx-auto px-6">
+      <h1 class="font-serif text-6xl font-bold text-slate-800 tracking-tight leading-tight">
+        DCF Valuator
+      </h1>
 
-    <p class="mt-6 text-slate-500 text-lg max-w-xl">
-      Enter a stock ticker and get a valuation
-    </p>
-
+      
+    </header>
+    
     <form
       (ngSubmit)="onSearch(ticker.value)"
-      class="mt-12 flex items-end gap-4"
+      class="mt-12 flex flex-col items-end gap-4 mx-auto"
       role="search"
     >
-      <div class="flex-1 flex flex-col">
-        <label class="text-xs font-semibold tracking-widest text-slate-400 uppercase">
-          Stock Ticker
-        </label>
-        <input
-          #ticker
-          placeholder="e.g. MSFT, AAPL, TSLA, NVDA"
-          class="mt-2 w-full bg-transparent border-0 border-b-2 border-slate-300 px-0 py-2 text-slate-700 placeholder-slate-400 focus:outline-none focus:border-blue-600 transition-colors"
-        />
-      </div>
+      
+      
+      <div class="mt-10 flex w-full flex-col gap-4 sm:flex-row sm:items-end">
+        <div class="w-full sm:flex-1">
+          <p class="mt-6 text-slate-500 text-lg max-w-xl">
+            Enter a stock ticker and get a valuation
+          </p>
+          <label class="text-xs font-semibold uppercase tracking-widest text-slate-400">
+            Stock Ticker
+          </label>
 
-      <button
-        type="submit"
-        class="shrink-0 rounded-md bg-blue-700 px-6 py-3 text-sm font-bold tracking-wide text-slate-100 uppercase hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-100 transition-colors"
-      >
-        Search →
-      </button>
+          <input
+            #ticker
+            placeholder="e.g. MSFT, AAPL, TSLA, NVDA"
+            class="mt-2 w-full border-0 border-b-2 border-slate-300 bg-transparent px-0 py-2 text-slate-700 placeholder-slate-400 transition-colors focus:border-blue-600 focus:outline-none"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="h-fit shrink-0 rounded-md bg-blue-700 px-6 py-3 text-sm font-bold uppercase tracking-wide text-slate-100 transition-colors hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+        >
+          Get Valuation →
+        </button>
+      </div>
+      
     </form>
-  </header>
+    <app-assumptions/>
+
+    
+
+    <!-- Loading state -->
+    <div *ngIf="loading" class="mt-10 text-slate-500">
+      Calculating valuation...
+    </div>
+
+    <!-- Error state -->
+    <div *ngIf="error_msg" class="mt-10 text-red-600">
+      {{ error_message }}
+    </div>
+
+    <!-- Result -->
+    <!-- <div *ngIf="dcf_result" class="mt-10 p-6 rounded-lg bg-white border border-slate-200 shadow-sm">
+      <h2 class="text-2xl font-bold text-slate-800">Valuation Result</h2>
+      <dl class="mt-4 grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-xs uppercase text-slate-400">Intrinsic Value</dt>
+          <dd class="text-xl font-semibold text-blue-700">${{ result.intrinsicValue | number:'1.2-2' }}</dd>
+        </div>
+        <div>
+          <dt class="text-xs uppercase text-slate-400">Current Price</dt>
+          <dd class="text-xl font-semibold text-slate-700">${{ result.currentPrice | number:'1.2-2' }}</dd>
+        </div>
+      </dl>
+    </div> -->
+  </div>
 </body>
 </html>
 
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
 
 <router-outlet />
