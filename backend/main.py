@@ -49,7 +49,7 @@ async def getStockPrices(ticker:str):
         fin = financials.Financials(ticker)
         return {"stock_prices": fin.stock_price_snapshot}
     except:
-        raise HTTPException(status_code=404, detail=f"Failed to load data for {stock}")
+        raise HTTPException(status_code=404, detail=f"Failed to load data for {ticker}")
 
 
 
