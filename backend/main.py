@@ -3,8 +3,17 @@ from services.data import financials
 from services.assumptions import assumptions
 from fastapi import *
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
+
+
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:4200"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 class AssumptionData(BaseModel):
 
     forecast_years:int

@@ -6,28 +6,39 @@
   <title>DCF Valuator</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-900 min-h-screen">
-  <header class="flex flex-col items-center pt-16 px-4">
-    <h1 class="text-4xl font-bold text-gray-100 tracking-tight">
-      Welcome to DCF Valuator
+<body class="bg-slate-100 min-h-screen">
+  <header class="max-w-3xl mx-auto pt-24 px-6">
+    <h1 class="font-serif text-6xl font-bold text-slate-800 tracking-tight leading-tight">
+      DCF Valuator
     </h1>
 
-    <form (ngSubmit)="onSearch(ticker.value)" class="mt-8 w-full max-w-md flex gap-2" role="search">
-     
-      <input
-        #ticker
-        placeholder="enter stock e.g. MSFT for Microsoft"
-        class="flex-1 rounded-md border border-gray-700 bg-gray-800 px-4 py-2 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-      />
+    <p class="mt-6 text-slate-500 text-lg max-w-xl">
+      Enter a stock ticker and get a valuation
+    </p>
+
+    <form
+      (ngSubmit)="onSearch(ticker.value)"
+      class="mt-12 flex items-end gap-4"
+      role="search"
+    >
+      <div class="flex-1 flex flex-col">
+        <label class="text-xs font-semibold tracking-widest text-slate-400 uppercase">
+          Stock Ticker
+        </label>
+        <input
+          #ticker
+          placeholder="e.g. MSFT, AAPL, TSLA, NVDA"
+          class="mt-2 w-full bg-transparent border-0 border-b-2 border-slate-300 px-0 py-2 text-slate-700 placeholder-slate-400 focus:outline-none focus:border-blue-600 transition-colors"
+        />
+      </div>
+
       <button
         type="submit"
-        class="rounded-md bg-blue-600 px-5 py-2 font-medium text-white hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900 transition-colors"
-        
+        class="shrink-0 rounded-md bg-blue-700 px-6 py-3 text-sm font-bold tracking-wide text-slate-100 uppercase hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-100 transition-colors"
       >
-        Search
+        Search →
       </button>
     </form>
-    <span>{{dcf_result}}</span>
   </header>
 </body>
 </html>
