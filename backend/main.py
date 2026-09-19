@@ -23,7 +23,7 @@ class AssumptionData(BaseModel):
     terminal_growth_rate:float
     cost_of_debt:float
 
-@app.post("/api/valuation/")
+@app.post("/api/valuation")
 async def calcStockValue(stock:str, assumed:AssumptionData): 
     print(assumed.forecast_years, assumed.revenue_growth, 
         assumed.risk_free_rate, assumed.equity_risk_premium, 
@@ -49,7 +49,7 @@ async def calcStockValue(stock:str, assumed:AssumptionData):
    
     if value == 'nan':
         raise HTTPException(status_code = 404, detail = f"Data Missing from scraper")
-    return {"value":value}
+    return {"value":value, "price": fin.share_price}
 
 
 @app.get("/api/stock_prices/{ticker}")

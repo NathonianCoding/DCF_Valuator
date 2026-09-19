@@ -65,6 +65,6 @@ def getInstrinsicValues(wacc, FCFF_forecast, total_debt, shares_outstanding, per
     last_FCFF = FCFF_forecast[years_forecast-1]
     terminal =  last_FCFF *(1+ perpetuity_growth_rate)/(wacc-perpetuity_growth_rate)
     ev = sum([FCFF_forecast[i]/((1+wacc)**(i+1)) for i in range(years_forecast-1)]) + (FCFF_forecast[years_forecast-1]+terminal)/(1+wacc)**years_forecast
-    return {"Enterprise Value":f"{ev.item():.2f}", "Equity Value":f"{(ev-total_debt).item():.2f}", "Value per stock":f"{((ev-total_debt)/shares_outstanding).item():.2f}"}
+    return {"Value per stock":f"{((ev-total_debt)/shares_outstanding).item():.2f}"}
 
     

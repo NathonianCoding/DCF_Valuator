@@ -1,8 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
-import { AssumptionsRecord } from '../app';
-
+import { AssumptionValues } from '../Assumptions/assumptions/assumptions';
 export interface DCF_success{
   value: string;
   stock_snapshot: Record<string, string>;
@@ -15,11 +14,18 @@ export interface DCF_failure{
 
 @Injectable({providedIn: 'root',})
 export class StockData {
-  private url = "http://127.0.0.1:8000/api/valuation"
+  private url = "http://localhost:8000/api/valuation"
+
   constructor(private http: HttpClient){}
-  getDcfValuation(ticker: string, assumptions:AssumptionsRecord): Observable<DCF_success|DCF_failure> {
-    return this.http.post<DCF_success>('/api/valuation', {stock: ticker, assumed: assumptions}).pipe(
+  
+
+  getDcfValuation(ticker: string, assumptions:AssumptionValues): Observable<DCF_success|DCF_failure> {
+
+    console.log("Assumptions");
+    console.log(assumptions);
+    return this.http.post<DCF_success>(this.url, {stock: ticker, assumed: assumptions}).pipe(
       catchError((err: HttpErrorResponse) => {
+        console.log(err);
         const message = err.error?.detail ?? 'Something went wrong fetching stock data.';
         return throwError(() => new Error(message));
       })
