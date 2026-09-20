@@ -34,11 +34,11 @@ export class App{
  
 
   protected readonly title = signal('client-side');
-  dcf_result: DCF_success |DCF_failure | null = null;
+  dcf_result: DCF_success | null = null;
   error_message: string | null = null;
   loading = false;
 
-  
+  //console.log(this.dcf_result, this.error_message);
   constructor(private stockDataService:StockData){}
   onSearch(ticker:string){
     console.log("test");
@@ -51,15 +51,20 @@ export class App{
  
     this.stockDataService.getDcfValuation(ticker, assumptions).subscribe({
       next: (result) => {
+        console.log("Success");
+        
         this.dcf_result = result;
+        console.log(this.dcf_result);
         this.loading = false;
       },
       error: (err: Error) => {
+        console.log("Fail");
+        console.log(err.message);
         this.error_message = err.message;
         this.loading = false;
       }
     });
-    console.log(this.dcf_result, this.error_message);
+    
 
 
   }
