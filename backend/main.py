@@ -1,6 +1,5 @@
 ﻿from services.forecast import forecast
 from services.data import financials
-from services.assumptions import assumptions
 from fastapi import *
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
