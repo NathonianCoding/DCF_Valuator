@@ -32,7 +32,7 @@ async def calcStockValue(stock:str, assumed:AssumptionData):
     except:
         raise HTTPException(status_code = 404, detail = f"Failed to load data for {stock}")
     fin_report = fin.load() # stores dictionary of metrics for every year
-
+   
     ebit_margin, da_portion, capex_portion, working_capital_portion = forecast.getMargins(fin_report.items())
     prev_year_data = list(fin_report.items())[0][1]
 

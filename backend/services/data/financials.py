@@ -1,6 +1,7 @@
 ﻿import yfinance as yf
 from collections import defaultdict
-
+import numpy as np
+from numpy import nan
 class Financials:
 
 
@@ -33,7 +34,7 @@ class Financials:
 
 
     # returns a hashmap with the row index of each metrix in the dataframe
-    #need to decide what to do if data not present
+
     def getRowIndices(self, df, index_dict):
         row_headers = df.index.to_list()
         for i in range(len(row_headers)):
@@ -46,12 +47,12 @@ class Financials:
     # stores metrics under each timestamp in a hashmap
     def getMetrics(self,df,dataset_as_array, index_dict, history):
         # reads data between 2023 and 2026
-        for i in range(4):
+        for i in range(len(df.columns)):
             timestamp = df.columns[i]
             for rowHeader in index_dict:
 
                 index=index_dict[rowHeader]
-                if index:
+                if index and dataset_as_array[index][i]!= np.float64("nan"):
                     history[timestamp][rowHeader] = dataset_as_array[index][i]
         return history
 
@@ -62,14 +63,27 @@ class Financials:
         self.financial_history = self.getMetrics(self.financials_df,self.financials_arr, rev_index_dict, self.financial_history)
         self.financial_history = self.getMetrics(self.cashflow_df, self.cashflow_arr, cashflow_index_dict, self.financial_history)
         self.financial_history = self.getMetrics(self.balance_sheet_df, self.balance_sheet_arr, balance_index_dict, self.financial_history)
+        print(self.financial_history)
+        #removes years with missing values
+        yearsToRemove = []
+        for key in self.financial_history:
+            values = list(map(lambda x: str(x.item()), self.financial_history[key].values()))
+            
+            if 'nan' in values:
+                yearsToRemove.append(key)
+        for keyToRemove in yearsToRemove:
+            self.financial_history.pop(keyToRemove)
+        print(self.financial_history)
 
 
         history_items = list(self.financial_history.items())
 
         for count in range(len(history_items)-1):
-
+        
             self.financial_history[history_items[count][0]]["Change in Net Working Capital"] = history_items[count][1]["Working Capital"] - history_items[count+1][1]["Working Capital"]
-        self.financial_history.pop(history_items[count+1][0])
+
+        if self.financial_history:
+            self.financial_history.pop(history_items[count+1][0])
         return self.financial_history
 if __name__ == "__main__":
     x=Financials("AMZN")
