@@ -47,11 +47,11 @@ def getMargins(financials):
 
 def getWACC(curr_finances, risk_free_rate, beta, equity_risk_premium, tax, price, shares, cost_of_debt):
     equity_cost = risk_free_rate+beta*equity_risk_premium
-    debt_after_tax = curr_finances["Total Debt"] * (1-tax)
+    total_debt = curr_finances["Total Debt"]
 
     market_cap = price * shares
 
-    debt_weight = curr_finances["Total Debt"]/(market_cap+debt_after_tax)
+    debt_weight = curr_finances["Total Debt"]/(market_cap+total_debt)
 
     wacc = debt_weight*cost_of_debt*(1-tax) + (1-debt_weight)*equity_cost
  

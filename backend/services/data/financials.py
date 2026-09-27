@@ -63,7 +63,7 @@ class Financials:
         self.financial_history = self.getMetrics(self.financials_df,self.financials_arr, rev_index_dict, self.financial_history)
         self.financial_history = self.getMetrics(self.cashflow_df, self.cashflow_arr, cashflow_index_dict, self.financial_history)
         self.financial_history = self.getMetrics(self.balance_sheet_df, self.balance_sheet_arr, balance_index_dict, self.financial_history)
-        print(self.financial_history)
+
         #removes years with missing values
         yearsToRemove = []
         for key in self.financial_history:
@@ -73,7 +73,6 @@ class Financials:
                 yearsToRemove.append(key)
         for keyToRemove in yearsToRemove:
             self.financial_history.pop(keyToRemove)
-        print(self.financial_history)
 
 
         history_items = list(self.financial_history.items())
@@ -83,7 +82,7 @@ class Financials:
             self.financial_history[history_items[count][0]]["Change in Net Working Capital"] = history_items[count][1]["Working Capital"] - history_items[count+1][1]["Working Capital"]
 
         if self.financial_history:
-            self.financial_history.pop(history_items[count+1][0])
+            self.financial_history.pop(history_items[count+1][0]) # removes earliest year as it has no change in net working capital
         return self.financial_history
 if __name__ == "__main__":
     x=Financials("AMZN")
